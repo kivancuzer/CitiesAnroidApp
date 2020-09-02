@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
     public void save(View view) {
         try {
             String cityName = txtCity.getText().toString().toUpperCase();
-            if(cityName.length()<1){
+            if (cityName.length() < 1) {
                 txtResult.setText("Please Write City Name");
-            }else{
+            } else {
                 if (dbCheck(cityName)) {
                     txtResult.setText("This City Name Has Already Exists");
                 } else {
@@ -95,22 +95,25 @@ public class MainActivity extends AppCompatActivity {
         try {
             String oldCityName = txtOldValue.getText().toString().toUpperCase();
             String newCityName = txtNewValue.getText().toString().toUpperCase();
-
-            if (dbCheck(oldCityName)) {
-                if (dbCheck(newCityName)) {
-                    txtResult.setText("This New City Name Already Exists");
-                } else {
-                    String sqlString = "UPDATE cities SET name = ? WHERE name = ? ";
-                    SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
-                    sqLiteStatement.bindString(1, newCityName);
-                    sqLiteStatement.bindString(2, oldCityName);
-                    sqLiteStatement.execute();
-                    txtResult.setText(oldCityName + " Modified to " + newCityName);
-                    list();
-                }
-
+            if (newCityName.length() < 1) {
+                txtResult.setText("Please Write City Name");
             } else {
-                txtResult.setText("This Old City Name has Not Exists");
+                if (dbCheck(oldCityName)) {
+                    if (dbCheck(newCityName)) {
+                        txtResult.setText("This New City Name Already Exists");
+                    } else {
+                        String sqlString = "UPDATE cities SET name = ? WHERE name = ? ";
+                        SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
+                        sqLiteStatement.bindString(1, newCityName);
+                        sqLiteStatement.bindString(2, oldCityName);
+                        sqLiteStatement.execute();
+                        txtResult.setText(oldCityName + " Modified to " + newCityName);
+                        list();
+                    }
+
+                } else {
+                    txtResult.setText("This Old City Name has Not Exists");
+                }
             }
 
 
