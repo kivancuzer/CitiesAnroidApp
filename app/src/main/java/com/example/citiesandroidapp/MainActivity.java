@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
                     sqLiteStatement.bindString(1, cityName);
                     sqLiteStatement.execute();
-                    txtResult.setText(cityName + " Successfully saved");
+                    txtResult.setText(cityName + " Successfully Saved");
                     list();
                 }
             }
@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
                 SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
                 sqLiteStatement.bindString(1, cityName);
                 sqLiteStatement.execute();
-                txtResult.setText(cityName + " Successfully deleted");
+                txtResult.setText(cityName + " Successfully Deleted");
                 list();
             } else {
-                txtResult.setText("This City Name Does Not Exists");
+                txtResult.setText("You Cannot Delete City That Has Not Exists in DB");
             }
 
         } catch (Exception e) {
@@ -96,11 +96,11 @@ public class MainActivity extends AppCompatActivity {
             String oldCityName = txtOldValue.getText().toString().toUpperCase();
             String newCityName = txtNewValue.getText().toString().toUpperCase();
             if (newCityName.length() < 1) {
-                txtResult.setText("Please Write City Name");
+                txtResult.setText("Please Enter City Name");
             } else {
                 if (dbCheck(oldCityName)) {
                     if (dbCheck(newCityName)) {
-                        txtResult.setText("This New City Name Already Exists");
+                        txtResult.setText(newCityName + " Has Already in DB");
                     } else {
                         String sqlString = "UPDATE cities SET name = ? WHERE name = ? ";
                         SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    txtResult.setText("This Old City Name has Not Exists");
+                    txtResult.setText("You Cannot Modify a City That Has Not Exists");
                 }
             }
 
