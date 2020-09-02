@@ -6,13 +6,93 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/btnAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="26dp"
+        android:onClick="save"
+        android:text="Add"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnRemove"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/btnRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        android:onClick="delete"
+        android:text="Remove"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCity" />
+
+    <Button
+        android:id="@+id/btnModify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="36dp"
+        android:onClick="update"
+        android:text="Modify"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNewValue" />
+
+    <TextView
+        android:id="@+id/txtResult"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="69dp"
+        android:text="Result Of The Action"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/txtCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="City"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/txtOldValue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <EditText
+        android:id="@+id/txtOldValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Old Value"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
+
+    <EditText
+        android:id="@+id/txtNewValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="New Value"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/txtOldValue"
+        app:layout_constraintTop_toBottomOf="@+id/txtOldValue" />
 </androidx.constraintlayout.widget.ConstraintLayout>
