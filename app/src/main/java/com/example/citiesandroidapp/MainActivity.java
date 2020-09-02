@@ -49,15 +49,19 @@ public class MainActivity extends AppCompatActivity {
     public void save(View view) {
         try {
             String cityName = txtCity.getText().toString().toUpperCase();
-            if (dbCheck(cityName)) {
-                txtResult.setText("This City Name Has Already Exists");
-            } else {
-                String sqlString = "INSERT INTO cities (name) VALUES(?)";
-                SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
-                sqLiteStatement.bindString(1, cityName);
-                sqLiteStatement.execute();
-                txtResult.setText(cityName + " Successfully saved");
-                list();
+            if(cityName.length()<1){
+                txtResult.setText("Please Write City Name");
+            }else{
+                if (dbCheck(cityName)) {
+                    txtResult.setText("This City Name Has Already Exists");
+                } else {
+                    String sqlString = "INSERT INTO cities (name) VALUES(?)";
+                    SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
+                    sqLiteStatement.bindString(1, cityName);
+                    sqLiteStatement.execute();
+                    txtResult.setText(cityName + " Successfully saved");
+                    list();
+                }
             }
 
         } catch (Exception e) {
