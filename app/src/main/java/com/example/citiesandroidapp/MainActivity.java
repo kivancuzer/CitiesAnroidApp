@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 txtResult.setText("Please Write City Name");
             } else {
                 if (dbCheck(cityName)) {
-                    txtResult.setText("This City Name Has Already Exists");
+                    txtResult.setText("This City Name Has Already Exist");
                 } else {
                     String sqlString = "INSERT INTO cities (name) VALUES(?)";
                     SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    txtResult.setText("You Cannot Modify a City That Has Not Exists");
+                    txtResult.setText("You Cannot Modify a City That Has Not Exist");
                 }
             }
 
