@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtResult;
     //SQLiteDatabase database;
     DatabaseHelper databaseHelper;
+    List<City> cityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         txtNewValue = findViewById(R.id.txtNewValue);
         txtResult = findViewById(R.id.txtResult);
 
+        cityList = new ArrayList<>();
+
        try{
            databaseHelper = DatabaseHelper.getInstance(this);
        }catch (Exception e){
@@ -51,13 +55,11 @@ public class MainActivity extends AppCompatActivity {
         City city = new City();
         city.name = txtCity.getText().toString().toUpperCase();
         databaseHelper.addCity(city);
-
-        List<City> cities = databaseHelper.getAllCities();
-        for (City cityList : cities) {
-            System.out.println(cityList.name.toString());
-        }
-        //
         txtResult.setText(databaseHelper.getStatus());
+        //print all city for control list
+        cityList = databaseHelper.getAllCities();
+
+
     }
 
     //btnRemove onClick function delete
@@ -65,11 +67,14 @@ public class MainActivity extends AppCompatActivity {
         City city = new City();
         city.name = txtCity.getText().toString().toUpperCase();
         databaseHelper.deleteCity(city);
+        txtResult.setText(databaseHelper.getStatus());
+        //print all city for control list
         List<City> cities = databaseHelper.getAllCities();
         for (City cityList : cities) {
             System.out.println(cityList.name.toString());
         }
-        txtResult.setText(databaseHelper.getStatus());
+        cityList = databaseHelper.getAllCities();
+
     }
 
     //btnModify onClick function update
@@ -79,11 +84,12 @@ public class MainActivity extends AppCompatActivity {
         oldCity.name = txtOldValue.getText().toString().toUpperCase();
         newCity.name = txtNewValue.getText().toString().toUpperCase();
         databaseHelper.updateCity(oldCity,newCity);
-
+        txtResult.setText(databaseHelper.getStatus());
+        //print all city for control list
         List<City> cities = databaseHelper.getAllCities();
         for (City cityList : cities) {
             System.out.println(cityList.name.toString());
         }
-        txtResult.setText(databaseHelper.getStatus());
+        cityList = databaseHelper.getAllCities();
     }
 }
