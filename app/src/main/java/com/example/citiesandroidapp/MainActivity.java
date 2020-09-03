@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btnAdd;
@@ -20,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
     EditText txtOldValue;
     EditText txtNewValue;
     TextView txtResult;
-    SQLiteDatabase database;
+    //SQLiteDatabase database;
+    DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,115 +38,52 @@ public class MainActivity extends AppCompatActivity {
         txtNewValue = findViewById(R.id.txtNewValue);
         txtResult = findViewById(R.id.txtResult);
 
-        //Create Database
-        try {
-            database = this.openOrCreateDatabase("Cities", MODE_PRIVATE, null);
-            database.execSQL("CREATE TABLE IF NOT EXISTS cities (id INTEGER PRIMARY KEY, name VARCHAR)");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
+       try{
+           databaseHelper = DatabaseHelper.getInstance(this);
+       }catch (Exception e){
+           e.printStackTrace();
+       }
     }
 
+    //btnAdd onClick function delete
     public void save(View view) {
-        try {
-            String cityName = txtCity.getText().toString().toUpperCase();
-            if (cityName.length() < 1) {
-                txtResult.setText("Please Write City Name");
-            } else {
-                if (dbCheck(cityName)) {
-                    txtResult.setText("This City Name Has Already Exist");
-                } else {
-                    String sqlString = "INSERT INTO cities (name) VALUES(?)";
-                    SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
-                    sqLiteStatement.bindString(1, cityName);
-                    sqLiteStatement.execute();
-                    txtResult.setText(cityName + " Successfully Saved");
-                    list();
-                }
-            }
+        //Create a city with name
+        City city = new City();
+        city.name = txtCity.getText().toString().toUpperCase();
+        databaseHelper.addCity(city);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<City> cities = databaseHelper.getAllCities();
+        for (City cityList : cities) {
+            System.out.println(cityList.name.toString());
         }
-
-
+        //
+        txtResult.setText(databaseHelper.getStatus());
     }
 
+    //btnRemove onClick function delete
     public void delete(View view) {
-        try {
-            String cityName = txtCity.getText().toString().toUpperCase();
-            if (dbCheck(cityName)) {
-                String sqlString = "DELETE FROM cities WHERE name = ? ";
-                SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
-                sqLiteStatement.bindString(1, cityName);
-                sqLiteStatement.execute();
-                txtResult.setText(cityName + " Successfully Deleted");
-                list();
-            } else {
-                txtResult.setText("You Cannot Delete City That Has Not Exists in DB");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        City city = new City();
+        city.name = txtCity.getText().toString().toUpperCase();
+        databaseHelper.deleteCity(city);
+        List<City> cities = databaseHelper.getAllCities();
+        for (City cityList : cities) {
+            System.out.println(cityList.name.toString());
         }
-
+        txtResult.setText(databaseHelper.getStatus());
     }
 
+    //btnModify onClick function update
     public void update(View view) {
-        try {
-            String oldCityName = txtOldValue.getText().toString().toUpperCase();
-            String newCityName = txtNewValue.getText().toString().toUpperCase();
-            if (newCityName.length() < 1) {
-                txtResult.setText("Please Enter City Name");
-            } else {
-                if (dbCheck(oldCityName)) {
-                    if (dbCheck(newCityName)) {
-                        txtResult.setText(newCityName + " Has Already in DB");
-                    } else {
-                        String sqlString = "UPDATE cities SET name = ? WHERE name = ? ";
-                        SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
-                        sqLiteStatement.bindString(1, newCityName);
-                        sqLiteStatement.bindString(2, oldCityName);
-                        sqLiteStatement.execute();
-                        txtResult.setText(oldCityName + " Modified to " + newCityName);
-                        list();
-                    }
+        City oldCity = new City();
+        City newCity = new City();
+        oldCity.name = txtOldValue.getText().toString().toUpperCase();
+        newCity.name = txtNewValue.getText().toString().toUpperCase();
+        databaseHelper.updateCity(oldCity,newCity);
 
-                } else {
-                    txtResult.setText("You Cannot Modify a City That Has Not Exist");
-                }
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<City> cities = databaseHelper.getAllCities();
+        for (City cityList : cities) {
+            System.out.println(cityList.name.toString());
         }
-
-
+        txtResult.setText(databaseHelper.getStatus());
     }
-
-    public void list() {
-        Cursor cursor = database.rawQuery("SELECT * FROM cities", null);
-        int nameIx = cursor.getColumnIndex("name");
-        int idIx = cursor.getColumnIndex("id");
-        while (cursor.moveToNext()) {
-            System.out.println(cursor.getInt(idIx) + " City Name : " + cursor.getString(nameIx));
-        }
-        cursor.close();
-    }
-
-    public boolean dbCheck(String city) {
-        Cursor cursor = database.rawQuery("SELECT * FROM cities", null);
-        int nameIx = cursor.getColumnIndex("name");
-        while (cursor.moveToNext()) {
-            if (cursor.getString(nameIx).equals(city)) {
-                return true;
-            }
-        }
-        cursor.close();
-        return false;
-    }
-
 }
