@@ -1,18 +1,14 @@
 package com.example.citiesandroidapp;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
-import android.nfc.Tag;
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    //Instance
     private static DatabaseHelper sInstance;
     //Database Info
     private static final String DATABASE_NAME = "Cities";
@@ -28,14 +24,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //Status for the txtResult
     public String status = "Result Of The Action";
 
+    /**
+     * Setting Status after a crud operation.
+     *
+     * @param status is a success or fail message which received from crud operations.
+     */
     public void setStatus(String status) {
         this.status = status;
     }
 
+    /**
+     * Getting status
+     *
+     * @return status which is last one.
+     */
     public String getStatus() {
         return status;
     }
 
+    /**
+     * Synchronize Database Helper class
+     *
+     * @param context Context which will be used.
+     * @return Instance
+     */
     public static synchronized DatabaseHelper getInstance(Context context) {
 
         if (sInstance == null) {
@@ -49,16 +61,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    // Called when the database connection is being configured.
+    /**
+     * Called when the database connection is being configured.
+     *
+     * @param db Database which will be configured.
+     */
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
         db.setForeignKeyConstraintsEnabled(true);
     }
 
-
-    //Called when the database is created for the FIRST time.
-    //If a database already exists on disk with the same name DATABASE_NAME, this method will not be called.
+    /**
+     * Create database if not created before.
+     *
+     * @param sqLiteDatabase Database which will be created.
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_CITIES_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_CITIES +
@@ -66,8 +84,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_CITIES_TABLE);
     }
 
-    //Called when the database needs to be upgraded.
-    //This method changes database version
+
+    /**
+     * Upgrade Database version.
+     *
+     * @param sqLiteDatabase SQLiteDatabase which is used.
+     * @param oldVersion old version number which version of database used.
+     * @param newVersion new version number which version of database will be used.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
@@ -78,7 +102,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //Insert a city into the database
+    /**
+     * Insert a city into the database
+     *
+     * @param city City which will be add into the database
+     */
     public void addCity(City city) {
         try {
             if (city.name.length() < 1) {
@@ -96,7 +124,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
             setStatus("Error while trying to add city to database");
@@ -104,7 +131,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    //Delete a city into the database
+
+    /**
+     * Delete a city into the database
+     *
+     * @param city City which will be deleted.
+     */
     public void deleteCity(City city) {
         try {
             if (dbCheck(city)) {
@@ -124,9 +156,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //Update old City to new City into the database
+    /**
+     * Update old City to new City into the database
+     *
+     * @param oldCity Old City which will be deleted.
+     * @param newCity New City which will be added to the city list
+     */
     public void updateCity(City oldCity, City newCity) {
         try {
+            //Name has to be more than 1 character.
             if (newCity.name.length() < 1) {
                 setStatus("Please Enter City Name Correctly");
             } else {
@@ -153,7 +191,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    //Select all cities from database
+
+    /**
+     * Getting All Cities from database
+     *
+     * @return cities, all City object in an ArrayList
+     */
     public ArrayList<City> getAllCities() {
         ArrayList<City> cities = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
@@ -178,7 +221,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cities;
     }
 
-    //Checks the database to avoid duplication
+    /**
+     * Checks the database to avoid duplication
+     *
+     * @param city City which will be checked.
+     * @return True for the matching, False for not matching in database.
+     */
     public boolean dbCheck(City city) {
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_CITIES, null);

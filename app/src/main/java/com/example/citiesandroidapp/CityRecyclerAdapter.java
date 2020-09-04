@@ -4,12 +4,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapter.CityHolder> {
 
@@ -34,11 +31,20 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 
     }
 
+    /**
+     * Getting how many items in the city list.
+     *
+     * @return City List Size
+     */
     @Override
     public int getItemCount() {
         return cityList.size();
     }
 
+    /**
+     * This method updates the City List for a synchronous recyclerview
+     * @param cityList city List which is a new city List after crud operations.
+     */
     public void updateList (ArrayList<City> cityList){
         this.cityList.clear();
         this.cityList=cityList;
@@ -49,7 +55,11 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 
         TextView textView;
 
-
+        /**
+         * Hold a view for the RecyclerView.
+         *
+         * @param itemView View which will be used in the RecyclerView.
+         */
         public CityHolder(@NonNull View itemView) {
             super(itemView);
             textView=itemView.findViewById(R.id.txtRecyclerViewCityName);

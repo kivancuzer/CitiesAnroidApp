@@ -1,6 +1,8 @@
 package com.example.citiesandroidapp;
 
-//City Model
+/**
+ * City Model
+ */
 public class City {
     public String name;
 }
