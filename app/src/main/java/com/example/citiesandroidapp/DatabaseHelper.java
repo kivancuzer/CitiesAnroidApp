@@ -154,8 +154,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //Select all cities from database
-    public List<City> getAllCities() {
-        List<City> cities = new ArrayList<>();
+    public ArrayList<City> getAllCities() {
+        ArrayList<City> cities = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_CITIES, null);
         int nameIx = cursor.getColumnIndex("name");

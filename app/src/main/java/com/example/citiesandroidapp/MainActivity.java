@@ -1,6 +1,8 @@
 package com.example.citiesandroidapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
     TextView txtResult;
     //SQLiteDatabase database;
     DatabaseHelper databaseHelper;
-    List<City> cityList;
+    ArrayList<City> cityList;
+    CityRecyclerAdapter cityRecyclerAdapter;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +46,21 @@ public class MainActivity extends AppCompatActivity {
 
         cityList = new ArrayList<>();
 
-       try{
-           databaseHelper = DatabaseHelper.getInstance(this);
-       }catch (Exception e){
-           e.printStackTrace();
-       }
+        try {
+            databaseHelper = DatabaseHelper.getInstance(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //RecyclerView
+        cityList = databaseHelper.getAllCities();
+        System.out.println(cityList.toString());
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        cityRecyclerAdapter = new CityRecyclerAdapter(cityList);
+        recyclerView.setAdapter(cityRecyclerAdapter);
+
     }
 
     //btnAdd onClick function delete
@@ -58,7 +72,8 @@ public class MainActivity extends AppCompatActivity {
         txtResult.setText(databaseHelper.getStatus());
         //print all city for control list
         cityList = databaseHelper.getAllCities();
-
+        cityRecyclerAdapter.updateList(cityList);
+        txtCity.setText("");
 
     }
 
@@ -69,12 +84,9 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper.deleteCity(city);
         txtResult.setText(databaseHelper.getStatus());
         //print all city for control list
-        List<City> cities = databaseHelper.getAllCities();
-        for (City cityList : cities) {
-            System.out.println(cityList.name.toString());
-        }
         cityList = databaseHelper.getAllCities();
-
+        cityRecyclerAdapter.updateList(cityList);
+        txtCity.setText("");
     }
 
     //btnModify onClick function update
@@ -83,13 +95,16 @@ public class MainActivity extends AppCompatActivity {
         City newCity = new City();
         oldCity.name = txtOldValue.getText().toString().toUpperCase();
         newCity.name = txtNewValue.getText().toString().toUpperCase();
-        databaseHelper.updateCity(oldCity,newCity);
+        databaseHelper.updateCity(oldCity, newCity);
         txtResult.setText(databaseHelper.getStatus());
         //print all city for control list
-        List<City> cities = databaseHelper.getAllCities();
-        for (City cityList : cities) {
-            System.out.println(cityList.name.toString());
-        }
         cityList = databaseHelper.getAllCities();
+        cityRecyclerAdapter.updateList(cityList);
+        txtOldValue.setText("");
+        txtNewValue.setText("");
+
     }
+
+
+
 }
