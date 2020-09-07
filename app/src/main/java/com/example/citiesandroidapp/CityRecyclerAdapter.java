@@ -4,8 +4,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
 public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapter.CityHolder> {
@@ -20,7 +22,7 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
     @Override
     public CityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.city_item,parent,false);
+        View view = layoutInflater.inflate(R.layout.city_item, parent, false);
 
         return new CityHolder(view);
     }
@@ -43,15 +45,16 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 
     /**
      * This method updates the City List for a synchronous recyclerview
+     *
      * @param cityList city List which is a new city List after crud operations.
      */
-    public void updateList (ArrayList<City> cityList){
+    public void updateList(ArrayList<City> cityList) {
         this.cityList.clear();
-        this.cityList=cityList;
+        this.cityList = cityList;
         this.notifyDataSetChanged();
     }
 
-    class CityHolder extends RecyclerView.ViewHolder{
+    class CityHolder extends RecyclerView.ViewHolder {
 
         TextView textView;
 
@@ -62,7 +65,7 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
          */
         public CityHolder(@NonNull View itemView) {
             super(itemView);
-            textView=itemView.findViewById(R.id.txtRecyclerViewCityName);
+            textView = itemView.findViewById(R.id.txtRecyclerViewCityName);
 
         }
     }

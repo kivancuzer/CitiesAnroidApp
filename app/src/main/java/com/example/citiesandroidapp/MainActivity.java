@@ -3,11 +3,13 @@ package com.example.citiesandroidapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
         txtOldValue = findViewById(R.id.txtOldValue);
         txtNewValue = findViewById(R.id.txtNewValue);
         txtResult = findViewById(R.id.txtResult);
-
         cityList = new ArrayList<>();
-
 
         try {
             databaseHelper = DatabaseHelper.getInstance(this);
@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     public void save(View view) {
         City city = new City();
         city.name = txtCity.getText().toString().toUpperCase();
-
         databaseHelper.addCity(city);
         txtResult.setText(databaseHelper.getStatus());
         cityList = databaseHelper.getAllCities();
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     public void delete(View view) {
         City city = new City();
         city.name = txtCity.getText().toString().toUpperCase();
-
         databaseHelper.deleteCity(city);
         txtResult.setText(databaseHelper.getStatus());
         cityList = databaseHelper.getAllCities();
@@ -99,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         City newCity = new City();
         oldCity.name = txtOldValue.getText().toString().toUpperCase();
         newCity.name = txtNewValue.getText().toString().toUpperCase();
-
         databaseHelper.updateCity(oldCity, newCity);
         txtResult.setText(databaseHelper.getStatus());
         cityList = databaseHelper.getAllCities();
@@ -108,7 +105,5 @@ public class MainActivity extends AppCompatActivity {
         txtNewValue.setText("");
 
     }
-
-
 
 }

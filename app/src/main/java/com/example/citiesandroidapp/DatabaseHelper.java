@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -89,8 +90,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Upgrade Database version.
      *
      * @param sqLiteDatabase SQLiteDatabase which is used.
-     * @param oldVersion old version number which version of database used.
-     * @param newVersion new version number which version of database will be used.
+     * @param oldVersion     old version number which version of database used.
+     * @param newVersion     new version number which version of database will be used.
      */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
@@ -191,7 +192,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-
     /**
      * Getting All Cities from database
      *
@@ -201,8 +201,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<City> cities = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM " + TABLE_CITIES, null);
-        int nameIx = cursor.getColumnIndex("name");
-        int idIx = cursor.getColumnIndex("id");
         try {
             if (cursor.moveToFirst()) {
                 do {
@@ -239,6 +237,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return false;
     }
-
 
 }
